@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сборка и Замена Электродвигателя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .form-container h1 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-container input, 
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-container button {
+            background-color: #007BFF;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Сборка и Замена</h1>
+        <form id="repairForm">
+            <label for="motorId">ID Электродвигателя:</label>
+            <input type="text" id="motorId" name="motorId" required>
+
+            <label for="employeeId">ID Сотрудника:</label>
+            <input type="text" id="employeeId" name="employeeId" required>
+
+            <label for="assemblyDate">Дата Сборки:</label>
+            <input type="date" id="assemblyDate" name="assemblyDate" required>
+
+            <label for="assemblyTime">Время Сборки:</label>
+            <input type="time" id="assemblyTime" name="assemblyTime" required>
+
+            <label for="replacementDetails">Детали для Замены (ID):</label>
+            <input type="text" id="replacementDetails" name="replacementDetails">
+
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("repairForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const data = {
+                motorId: document.getElementById("motorId").value,
+                employeeId: document.getElementById("employeeId").value,
+                assemblyDate: document.getElementById("assemblyDate").value,
+                assemblyTime: document.getElementById("assemblyTime").value,
+                replacementDetails: document.getElementById("replacementDetails").value,
+            };
+
+            const scriptURL = "URL_ВАШЕГО_APPS_SCRIPT";
+            try {
+                const response = await fetch(scriptURL, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.ok) {
+                    alert("Данные успешно отправлены!");
+                    document.getElementById("repairForm").reset();
+                } else {
+                    alert("Ошибка отправки данных.");
+                }
+            } catch (error) {
+                alert("Ошибка подключения: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
