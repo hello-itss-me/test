@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сборка и Замена Электродвигателя</title>
+    <title>Сборка и Замена</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,7 +22,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
         }
         .form-container h1 {
             text-align: center;
@@ -72,8 +72,24 @@
             <label for="assemblyTime">Время Сборки:</label>
             <input type="time" id="assemblyTime" name="assemblyTime" required>
 
-            <label for="replacementDetails">Детали для Замены (ID):</label>
-            <input type="text" id="replacementDetails" name="replacementDetails">
+            <!-- Поля для ID деталей -->
+            <label for="bearingId">Замена Подшипника (ID):</label>
+            <input type="text" id="bearingId" name="bearingId">
+
+            <label for="sealId">Замена Уплотнения торцевого (ID):</label>
+            <input type="text" id="sealId" name="sealId">
+
+            <label for="fanId">Замена Вентилятора (ID):</label>
+            <input type="text" id="fanId" name="fanId">
+
+            <label for="housingId">Замена Кожуха (ID):</label>
+            <input type="text" id="housingId" name="housingId">
+
+            <label for="ringId">Замена стопорных Колец (ID):</label>
+            <input type="text" id="ringId" name="ringId">
+
+            <label for="sealRingId">Замена Манжеты (ID):</label>
+            <input type="text" id="sealRingId" name="sealRingId">
 
             <button type="submit">Отправить</button>
         </form>
@@ -82,12 +98,21 @@
     <script>
         document.getElementById("repairForm").addEventListener("submit", async function (event) {
             event.preventDefault();
+
+            // Собираем данные из формы
             const data = {
                 motorId: document.getElementById("motorId").value,
                 employeeId: document.getElementById("employeeId").value,
                 assemblyDate: document.getElementById("assemblyDate").value,
                 assemblyTime: document.getElementById("assemblyTime").value,
-                replacementDetails: document.getElementById("replacementDetails").value,
+                replacementDetails: [
+                    document.getElementById("bearingId").value,
+                    document.getElementById("sealId").value,
+                    document.getElementById("fanId").value,
+                    document.getElementById("housingId").value,
+                    document.getElementById("ringId").value,
+                    document.getElementById("sealRingId").value,
+                ].filter(Boolean).join(", "), // Сохраняем только заполненные поля
             };
 
             const scriptURL = "URL_ВАШЕГО_APPS_SCRIPT";
