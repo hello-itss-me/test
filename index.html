@@ -50,15 +50,12 @@
       const formData = new FormData(form);
       const data = {};
 
-      // Перевод FormData в объект
       formData.forEach((value, key) => {
         data[key] = value;
       });
 
-      // Отправка данных
       fetch(scriptURL, {
         method: 'POST',
-        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -67,7 +64,7 @@
         .then(response => {
           if (response.ok) {
             alert('Данные успешно отправлены!');
-            form.reset(); // Очистка формы после отправки
+            form.reset();
           } else {
             throw new Error(`Ошибка сервера: ${response.statusText}`);
           }
