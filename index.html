@@ -2,36 +2,77 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Сборка и Замена</title>
 </head>
 <body>
   <h1>Сборка и Замена</h1>
-  <form id="assembly-replacement-form">
-    <label>ID Электродвигателя: <input type="text" name="motorID" required></label><br>
-    <label>ID Сотрудника: <input type="text" name="employeeID" required></label><br>
-    <label>Дата Сборки: <input type="date" name="assemblyDate" required></label><br>
-    <label>Время Сборки: <input type="time" name="assemblyTime" required></label><br>
-    <label>Замена Подшипника (ID): <input type="text" name="bearingID"></label><br>
-    <label>Замена Уплотнения торцевого (ID): <input type="text" name="sealID"></label><br>
-    <label>Замена Вентилятора (ID): <input type="text" name="fanID"></label><br>
-    <label>Замена Кожуха (ID): <input type="text" name="coverID"></label><br>
-    <label>Замена Стопорных Колец (ID): <input type="text" name="ringsID"></label><br>
-    <label>Замена Манжеты (ID): <input type="text" name="sealRingID"></label><br>
+  <form id="assembly-replacement-form" action="https://script.google.com/macros/s/AKfycbzToN0bsNp9Dfpr51Lh8XN1tVF18-60h-s9jJbtl8rUOhtWWRzRvRCn0AjVTVXZPWybGg/exec" method="POST">
+    <label>ID Электродвигателя: 
+      <input type="text" name="motorID" required>
+    </label><br>
+    <label>ID Сотрудника: 
+      <input type="text" name="employeeID" required>
+    </label><br>
+    <label>Дата Сборки: 
+      <input type="date" name="assemblyDate" required>
+    </label><br>
+    <label>Время Сборки: 
+      <input type="time" name="assemblyTime" required>
+    </label><br>
+    <label>Замена Подшипника (ID): 
+      <input type="text" name="bearingID">
+    </label><br>
+    <label>Замена Уплотнения торцевого (ID): 
+      <input type="text" name="sealID">
+    </label><br>
+    <label>Замена Вентилятора (ID): 
+      <input type="text" name="fanID">
+    </label><br>
+    <label>Замена Кожуха (ID): 
+      <input type="text" name="coverID">
+    </label><br>
+    <label>Замена Стопорных Колец (ID): 
+      <input type="text" name="ringsID">
+    </label><br>
+    <label>Замена Манжеты (ID): 
+      <input type="text" name="sealRingID">
+    </label><br>
     <button type="submit">Отправить</button>
   </form>
+
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzToN0bsNp9Dfpr51Lh8XN1tVF18-60h-s9jJbtl8rUOhtWWRzRvRCn0AjVTVXZPWybGg/exec';
     const form = document.getElementById('assembly-replacement-form');
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Предотвращаем перезагрузку страницы
       const formData = new FormData(form);
+
+      // Обрабатываем пустые значения
+      for (let [key, value] of formData.entries()) {
+        if (!value) {
+          formData.set(key, '');
+        }
+      }
+
+      // Отправляем данные на сервер
       fetch(scriptURL, {
         method: 'POST',
         body: formData,
       })
-      .then(response => alert('Данные успешно отправлены!'))
-      .catch(error => alert('Ошибка отправки: ' + error.message));
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.statusText}`);
+          }
+          return response.text();
+        })
+        .then(text => {
+          alert('Ответ сервера: ' + text); // Показываем ответ сервера
+        })
+        .catch(error => {
+          alert('Ошибка отправки: ' + error.message); // Показываем ошибку
+        });
     });
   </script>
 </body>
