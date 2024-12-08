@@ -7,23 +7,30 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
         }
         form {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         label {
             display: block;
             margin-top: 10px;
+            font-weight: bold;
         }
         input[type="text"], input[type="date"], input[type="time"] {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         button {
             margin-top: 20px;
@@ -33,6 +40,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
         button:hover {
             background-color: #0056b3;
@@ -40,7 +48,7 @@
     </style>
 </head>
 <body>
-    <h2>Сборка и Замена</h2>
+    <h2 style="text-align: center;">Сборка и Замена</h2>
     <form id="repairForm">
         <label>ID Электродвигателя:</label>
         <input type="text" name="motor_id" required>
@@ -103,10 +111,18 @@
                     alert('Данные успешно отправлены!');
                     form.reset();
                 } else {
-                    alert('Ошибка отправки данных.');
+                    // Если сервер вернул ошибку
+                    return response.text().then(text => {
+                        console.error('Ответ сервера с ошибкой:', text);
+                        alert(`Ошибка отправки данных: ${text}`);
+                    });
                 }
             })
-            .catch(error => console.error('Ошибка:', error));
+            .catch(error => {
+                // Обработка сетевых ошибок
+                console.error('Сетевая ошибка:', error);
+                alert('Ошибка отправки данных. Проверьте консоль для деталей.');
+            });
         }
     </script>
 </body>
