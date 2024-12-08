@@ -4,88 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Сборка и Замена</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* CSS для выравнивания */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input, button {
+      padding: 8px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Сборка и Замена</h1>
-    <form id="assembly-replacement-form" name="assembly-replacement-form">
-      <label for="motorId">ID Электродвигателя:</label>
-      <input type="text" id="motorId" name="motorId" required>
-
-      <label for="employeeId">ID Сотрудника:</label>
-      <input type="text" id="employeeId" name="employeeId" required>
-
-      <label for="assemblyDate">Дата Сборки:</label>
-      <input type="date" id="assemblyDate" name="assemblyDate" required>
-
-      <label for="assemblyTime">Время Сборки:</label>
-      <input type="time" id="assemblyTime" name="assemblyTime" required>
-
-      <label for="bearingId">Замена Подшипника (ID):</label>
-      <input type="text" id="bearingId" name="bearingId">
-
-      <label for="sealId">Замена Уплотнения торцевого (ID):</label>
-      <input type="text" id="sealId" name="sealId">
-
-      <label for="fanId">Замена Вентилятора (ID):</label>
-      <input type="text" id="fanId" name="fanId">
-
-      <label for="casingId">Замена Кожуха (ID):</label>
-      <input type="text" id="casingId" name="casingId">
-
-      <label for="retainingRingId">Замена стопорных Колец (ID):</label>
-      <input type="text" id="retainingRingId" name="retainingRingId">
-
-      <label for="cuffId">Замена Манжеты (ID):</label>
-      <input type="text" id="cuffId" name="cuffId">
-
-      <button type="submit">Отправить</button>
-    </form>
-  </div>
+  <h1>Сборка и Замена</h1>
+  <form id="assembly-replacement-form">
+    <label>
+      ID Электродвигателя:
+      <input type="text" name="motor_id" required>
+    </label>
+    <label>
+      ID Сотрудника:
+      <input type="text" name="employee_id" required>
+    </label>
+    <!-- Дополнительные поля -->
+    <button type="submit">Отправить</button>
+  </form>
 
   <script>
     const scriptURL =
       "https://script.google.com/macros/s/AKfycbzToN0bsNp9Dfpr51Lh8XN1tVF18-60h-s9jJbtl8rUOhtWWRzRvRCn0AjVTVXZPWybGg/exec";
 
-    const form = document.forms["assembly-replacement-form"];
+    const form = document.getElementById("assembly-replacement-form");
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const formData = {
-        motorId: document.getElementById("motorId").value,
-        employeeId: document.getElementById("employeeId").value,
-        assemblyDate: document.getElementById("assemblyDate").value,
-        assemblyTime: document.getElementById("assemblyTime").value,
-        replacementDetails: {
-          bearing: document.getElementById("bearingId").value,
-          seal: document.getElementById("sealId").value,
-          fan: document.getElementById("fanId").value,
-          casing: document.getElementById("casingId").value,
-          retainingRing: document.getElementById("retainingRingId").value,
-          cuff: document.getElementById("cuffId").value,
-        },
-      };
+      const formData = new FormData(form);
 
       fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: formData,
       })
         .then((response) => {
           if (response.ok) {
             alert("Данные успешно отправлены!");
             form.reset();
           } else {
-            alert("Ошибка отправки данных.");
+            throw new Error("Ошибка отправки данных.");
           }
         })
         .catch((error) => {
           console.error("Ошибка:", error);
-          alert("Ошибка отправки данных.");
+          alert("Произошла ошибка. Проверьте данные.");
         });
     });
   </script>
