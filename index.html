@@ -7,16 +7,16 @@
   <h1>Сборка и Замена</h1>
   <form id="myForm">
     <label for="id_electrodvigatel">ID Электродвигателя:</label>
-    <input type="text" id="id_electrodvigatel" name="id_electrodvigatel"><br><br>
+    <input type="text" id="id_electrodvigatel" name="id_electrodvigatel" required><br><br>
 
     <label for="id_sotrudnika">ID Сотрудника:</label>
-    <input type="text" id="id_sotrudnika" name="id_sotrudnika"><br><br>
+    <input type="text" id="id_sotrudnika" name="id_sotrudnika" required><br><br>
 
     <label for="data_sborki">Дата Сборки:</label>
-    <input type="date" id="data_sborki" name="data_sborki"><br><br>
+    <input type="date" id="data_sborki" name="data_sborki" required><br><br>
 
     <label for="vremya_sborki">Время Сборки:</label>
-    <input type="time" id="vremya_sborki" name="vremya_sborki"><br><br>
+    <input type="time" id="vremya_sborki" name="vremya_sborki" required><br><br>
 
     <label for="zamena_podshipnika">Замена Подшипника (ID):</label>
     <input type="text" id="zamena_podshipnika" name="zamena_podshipnika"><br><br>
@@ -48,21 +48,25 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const formData = new FormData(form);
-      fetch('https://script.google.com/macros/s/AKfycbygv1noMH7vDbXmlIdrxb76RCI4u5pTrGD-LslkdlwGDAjWs0OtTxiQrGmBlc74suo4Lw/exec', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log('Данные отправлены в Google Таблицу:', data);
-        responseDiv.textContent = data;
-        form.reset();
-      })
-      .catch(error => {
-        console.error('Ошибка при отправке данных:', error);
-        responseDiv.textContent = 'Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.';
-      });
+      if (form.checkValidity()) {
+        const formData = new FormData(form);
+        fetch('https://script.google.com/macros/s/AKfycbygv1noMH7vDbXmlIdrxb76RCI4u5pTrGD-LslkdlwGDAjWs0OtTxiQrGmBlc74suo4Lw/exec', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Данные отправлены в Google Таблицу:', data);
+          responseDiv.textContent = data;
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Ошибка при отправке данных:', error);
+          responseDiv.textContent = 'Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.';
+        });
+      } else {
+        responseDiv.textContent = 'Пожалуйста, заполните все обязательные поля.';
+      }
     });
   </script>
 </body>
