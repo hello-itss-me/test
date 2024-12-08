@@ -1,78 +1,61 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Сборка и Замена</title>
 </head>
 <body>
   <h1>Сборка и Замена</h1>
-  <form id="assemblyForm">
-    <label for="motor_id">ID Электродвигателя:</label>
-    <input type="text" id="motor_id" name="motor_id" required><br><br>
+  <form id="myForm">
+    <label for="id_electrodvigatel">ID Электродвигателя:</label>
+    <input type="text" id="id_electrodvigatel" name="id_electrodvigatel"><br><br>
 
-    <label for="employee_id">ID Сотрудника:</label>
-    <input type="text" id="employee_id" name="employee_id" required><br><br>
+    <label for="id_sotrudnika">ID Сотрудника:</label>
+    <input type="text" id="id_sotrudnika" name="id_sotrudnika"><br><br>
 
-    <label for="assembly_date">Дата Сборки:</label>
-    <input type="date" id="assembly_date" name="assembly_date" required><br><br>
+    <label for="data_sborki">Дата Сборки:</label>
+    <input type="date" id="data_sborki" name="data_sborki"><br><br>
 
-    <label for="assembly_time">Время Сборки:</label>
-    <input type="time" id="assembly_time" name="assembly_time" required><br><br>
+    <label for="vremya_sborki">Время Сборки:</label>
+    <input type="time" id="vremya_sborki" name="vremya_sborki"><br><br>
 
-    <label for="bearing_id">Замена Подшипника (ID):</label>
-    <input type="text" id="bearing_id" name="bearing_id"><br><br>
+    <label for="zamena_podshipnika">Замена Подшипника (ID):</label>
+    <input type="text" id="zamena_podshipnika" name="zamena_podshipnika"><br><br>
 
-    <label for="seal_id">Замена Уплотнения торцевого (ID):</label>
-    <input type="text" id="seal_id" name="seal_id"><br><br>
+    <label for="zamena_uglitelnogo_gornec">Замена Углительного горнец (ID):</label>
+    <input type="text" id="zamena_uglitelnogo_gornec" name="zamena_uglitelnogo_gornec"><br><br>
 
-    <label for="fan_id">Замена Вентилятора (ID):</label>
-    <input type="text" id="fan_id" name="fan_id"><br><br>
+    <label for="zamena_ventilyatora">Замена Вентилятора (ID):</label>
+    <input type="text" id="zamena_ventilyatora" name="zamena_ventilyatora"><br><br>
 
-    <label for="casing_id">Замена Кожуха (ID):</label>
-    <input type="text" id="casing_id" name="casing_id"><br><br>
+    <label for="zamena_kol'tsa">Замена Кольца (ID):</label>
+    <input type="text" id="zamena_kol'tsa" name="zamena_kol'tsa"><br><br>
 
-    <label for="snap_ring_id">Замена Стопорных Колец (ID):</label>
-    <input type="text" id="snap_ring_id" name="snap_ring_id"><br><br>
+    <label for="zamena_stopornykh_kolec">Замена Сторонных Колец (ID):</label>
+    <input type="text" id="zamena_stopornykh_kolec" name="zamena_stopornykh_kolec"><br><br>
 
-    <label for="gasket_id">Замена Манжет (ID):</label>
-    <input type="text" id="gasket_id" name="gasket_id"><br><br>
+    <label for="zamena_manjeta">Замена Манжет (ID):</label>
+    <input type="text" id="zamena_manjeta" name="zamena_manjeta"><br><br>
 
-    <button type="button" id="submitBtn">Отправить</button>
+    <button type="submit">Отправить</button>
   </form>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbygv1noMH7vDbXmlIdrxb76RCI4u5pTrGD-LslkdlwGDAjWs0OtTxiQrGmBlc74suo4Lw/exec';
-    const form = document.getElementById('assemblyForm');
-    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('myForm');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-    submitBtn.addEventListener('click', () => {
       const formData = new FormData(form);
-      const data = {};
-
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
-
-      fetch(scriptURL, {
+      fetch('https://script.google.com/macros/s/AKfycbygv1noMH7vDbXmlIdrxb76RCI4u5pTrGD-LslkdlwGDAjWs0OtTxiQrGmBlc74suo4Lw/exec', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: formData
       })
-        .then(response => {
-          if (response.ok) {
-            alert('Данные успешно отправлены!');
-            form.reset();
-          } else {
-            throw new Error(`Ошибка сервера: ${response.statusText}`);
-          }
-        })
-        .catch(error => {
-          console.error('Ошибка отправки данных:', error);
-          alert('Ошибка отправки данных. Проверьте консоль для деталей.');
-        });
+      .then(response => {
+        console.log('Данные отправлены в Google Таблицу!');
+        form.reset();
+      })
+      .catch(error => {
+        console.error('Ошибка при отправке данных:', error);
+      });
     });
   </script>
 </body>
