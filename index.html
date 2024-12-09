@@ -2,72 +2,41 @@
 <html>
 <head>
   <title>Сборка и Замена</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
-  <h1>Сборка и Замена</h1>
-  <form id="myForm">
-    <label for="id_electrodvigatel">ID Электродвигателя:</label>
-    <input type="text" id="id_electrodvigatel" name="id_electrodvigatel" required><br><br>
-
-    <label for="id_sotrudnika">ID Сотрудника:</label>
-    <input type="text" id="id_sotrudnika" name="id_sotrudnika" required><br><br>
-
-    <label for="data_sborki">Дата Сборки:</label>
-    <input type="date" id="data_sborki" name="data_sborki" required><br><br>
-
-    <label for="vremya_sborki">Время Сборки:</label>
-    <input type="time" id="vremya_sborki" name="vremya_sborki" required><br><br>
-
-    <label for="zamena_podshipnika">Замена Подшипника (ID):</label>
-    <input type="text" id="zamena_podshipnika" name="zamena_podshipnika"><br><br>
-
-    <label for="zamena_uglitelnogo_gornec">Замена Углительного горнец (ID):</label>
-    <input type="text" id="zamena_uglitelnogo_gornec" name="zamena_uglitelnogo_gornec"><br><br>
-
-    <label for="zamena_ventilyatora">Замена Вентилятора (ID):</label>
-    <input type="text" id="zamena_ventilyatora" name="zamena_ventilyatora"><br><br>
-
-    <label for="zamena_kol'tsa">Замена Кольца (ID):</label>
-    <input type="text" id="zamena_kol'tsa" name="zamena_kol'tsa"><br><br>
-
-    <label for="zamena_stopornykh_kolec">Замена Сторонных Колец (ID):</label>
-    <input type="text" id="zamena_stopornykh_kolec" name="zamena_stopornykh_kolec"><br><br>
-
-    <label for="zamena_manjeta">Замена Манжет (ID):</label>
-    <input type="text" id="zamena_manjeta" name="zamena_manjeta"><br><br>
-
-    <button type="submit">Отправить</button>
-  </form>
-
-  <div id="response"></div>
-
   <script>
-    const form = document.getElementById('myForm');
-    const responseDiv = document.getElementById('response');
+    // Инициализация клиента Supabase
+    const supabaseUrl = 'https://yyvkwphwqiwhkonrfrkm.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5dmt3cGh3cWl3aGtvbnJmcmttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM2NDk3MTUsImV4cCI6MjA0OTIyNTcxNX0.HihoTwSZjN1M-fJ7XXGqq7ROSZIBHOd6-N-INzjM2lQ';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    // Создание таблицы "Сборка и Замена"
+    async function createTable() {
+      const { error } = await supabase.from('Сборка и Замена').create({
+        ID_Электродвигателя: 'text',
+        ID_Сотрудника: 'text',
+        Дата_Сборки: 'text',
+        Время_Сборки: 'text',
+        Замена_Подшипника: 'text',
+        Замена_Усилительного_Горенца: 'text',
+        Замена_Вентилятора: 'text',
+        Замена_Кольца: 'text',
+        Замена_Сторонних_Колес: 'text',
+        Замена_Магнета: 'text'
+      });
 
-      if (form.checkValidity()) {
-        const formData = new FormData(form);
-        fetch('https://script.google.com/macros/s/AKfycbygv1noMH7vDbXmlIdrxb76RCI4u5pTrGD-LslkdlwGDAjWs0OtTxiQrGmBlc74suo4Lw/exec', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-          console.log('Данные отправлены в Google Таблицу:', data);
-          responseDiv.textContent = data;
-          form.reset();
-        })
-        .catch(error => {
-          console.error('Ошибка при отправке данных:', error);
-          responseDiv.textContent = 'Произошла ошибка при отправке данных. Пожалуйста, попробуйте еще раз.';
-        });
+      if (error) {
+        console.error('Error creating table:', error);
+        alert('Произошла ошибка при создании таблицы.');
       } else {
-        responseDiv.textContent = 'Пожалуйста, заполните все обязательные поля.';
+        console.log('Table "Сборка и Замена" created successfully!');
+        alert('Таблица "Сборка и Замена" успешно создана.');
       }
-    });
+    }
+
+    // Вызываем функцию для создания таблицы
+    createTable();
   </script>
 </body>
 </html>
